@@ -1,4 +1,6 @@
-package de.workshops.bookshelf;
+package de.workshops.bookshelf.exception;
+
+import de.workshops.bookshelf.app.BookException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

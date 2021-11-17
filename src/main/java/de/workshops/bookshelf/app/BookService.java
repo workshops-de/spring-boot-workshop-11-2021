@@ -1,4 +1,4 @@
-package de.workshops.bookshelf;
+package de.workshops.bookshelf.app;
 
 import java.util.ArrayList;
 import java.util.List;
