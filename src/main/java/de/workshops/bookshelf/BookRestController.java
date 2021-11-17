@@ -1,6 +1,7 @@
 package de.workshops.bookshelf;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,5 +56,19 @@ public class BookRestController {
                 .filter(book -> book.getAuthor().startsWith(name))
                 .findFirst()
                 .orElseThrow(BookException::new);
+    }
+
+    @PostMapping("/search")
+    List<Book> searchBooks (@RequestBody BookSearchRequest searchRequest) throws BookException {
+        final var foundBooks = new ArrayList<Book>();
+        if (searchRequest.getAuthor() != null) {
+            final var byAuthor = getByAuthor(searchRequest.getAuthor());
+            foundBooks.add(byAuthor);
+        }
+        if (searchRequest.getIsbn() != null) {
+            final var byIsbn = getByIsbn(searchRequest.getIsbn());
+            foundBooks.add(byIsbn);
+        }
+        return foundBooks;
     }
 }
