@@ -2,7 +2,8 @@ package de.workshops.bookshelf.app;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/book")
 public class BookRestController {
 
-    private final BookService bookService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookRestController.class);
 
-    @Autowired
-    public BookRestController(final BookService bookService) {
+    private final BookService bookService;
+    private final BookshelfProperties bookshelfProperties;
+
+    public BookRestController(final BookService bookService,
+            final BookshelfProperties bookshelfProperties)
+    {
         this.bookService = bookService;
+        this.bookshelfProperties = bookshelfProperties;
+
+        LOGGER.info("Bookshelf Properties: {}", this.bookshelfProperties.toString());
     }
 
     @GetMapping
