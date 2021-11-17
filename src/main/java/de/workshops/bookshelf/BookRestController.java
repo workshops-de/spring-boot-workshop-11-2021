@@ -1,9 +1,9 @@
 package de.workshops.bookshelf;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +29,13 @@ public class BookRestController {
     }
 
     @GetMapping("/{isbn}")
-    public Book getByIsbn(@PathVariable String isbn) throws BookException {
-        return bookService.getByIsbn(isbn);
+    public ResponseEntity<Book> getByIsbn(@PathVariable String isbn) {
+        try {
+            final var book = bookService.getByIsbn(isbn);
+            return ResponseEntity.ok(book);
+        } catch (BookException ex) {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping(params = "author")
@@ -38,8 +43,14 @@ public class BookRestController {
         return bookService.getByAuthor(name);
     }
 
-    @PostMapping("/search")
+    @PostMapping(value = "/search")
     public List<Book> searchBooks (@RequestBody BookSearchRequest searchRequest) throws BookException {
         return bookService.searchBooks(searchRequest);
     }
+
+// Either this or @ControllerAdvice in class GlobalExceptionHandler
+//    @ExceptionHandler(BookException.class)
+//    public ResponseEntity<String> handleBookException(BookException e) {
+//        return new ResponseEntity("Cannot find this book", HttpStatus.NOT_FOUND);
+//    }
 }
