@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:h2:mem:bookshelfdb
-    username: sa
-    password: pass
+    username: ${H2_USERNAME:sa}
+    password: ${H2_PASSWORD:pass}
   h2:
     console:
       enabled: true
