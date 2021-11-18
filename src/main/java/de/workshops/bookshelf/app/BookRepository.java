@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,7 +18,8 @@ class BookRepository {
     private final ResourceLoader resourceLoader;
     private List<Book> books;
 
-    BookRepository(final ObjectMapper mapper, final ResourceLoader resourceLoader) {
+    BookRepository(final ObjectMapper mapper, final ResourceLoader resourceLoader,
+            final JdbcTemplate template) {
         this.mapper = mapper;
         this.resourceLoader = resourceLoader;
     }

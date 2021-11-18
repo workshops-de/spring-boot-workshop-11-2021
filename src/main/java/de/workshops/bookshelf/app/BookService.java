@@ -9,17 +9,19 @@ import org.springframework.stereotype.Service;
 class BookService {
 
     private final BookRepository bookRepository;
+    private final JdbcBookRepository jdbcBookRepository;
 
-    BookService(final BookRepository bookRepository) {
+    BookService(final BookRepository bookRepository, final JdbcBookRepository jdbcBookRepository) {
         this.bookRepository = bookRepository;
+        this.jdbcBookRepository = jdbcBookRepository;
     }
 
     List<Book> getAllBooks() {
-        return bookRepository.findAllBooks();
+        return jdbcBookRepository.findAllBooks();
     }
 
     Book getByIsbn(final String isbn) throws BookException {
-        return bookRepository.findByIsbn(isbn);
+        return jdbcBookRepository.findByIsbn(isbn);
     }
 
     Book getByAuthor(final String name) throws BookException {

@@ -6,6 +6,11 @@ spring:
   h2:
     console:
       enabled: true
+  jpa:
+    show-sql: true
+logging:
+  level:
+    sql: debug
 ---
 spring:
   config:
