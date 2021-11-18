@@ -2,6 +2,8 @@ package de.workshops.bookshelf.app;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -10,14 +12,19 @@ class BookService {
 
     private final BookRepository bookRepository;
     private final JdbcBookRepository jdbcBookRepository;
+    private final JpaBookRepository jpaBookRepository;
 
-    BookService(final BookRepository bookRepository, final JdbcBookRepository jdbcBookRepository) {
+    BookService(final BookRepository bookRepository, final JdbcBookRepository jdbcBookRepository,
+            final JpaBookRepository jpaBookRepository) {
         this.bookRepository = bookRepository;
         this.jdbcBookRepository = jdbcBookRepository;
+        this.jpaBookRepository = jpaBookRepository;
     }
 
     List<Book> getAllBooks() {
-        return jdbcBookRepository.findAllBooks();
+        final var allBooks = jpaBookRepository.findAll();
+        return StreamSupport.stream(allBooks.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     Book getByIsbn(final String isbn) throws BookException {
@@ -25,7 +32,7 @@ class BookService {
     }
 
     Book getByAuthor(final String name) throws BookException {
-        return bookRepository.findByName(name);
+        return jpaBookRepository.findByAuthorLike("%"+name+"%");
     }
 
     List<Book> searchBooks(final BookSearchRequest searchRequest) throws BookException {
