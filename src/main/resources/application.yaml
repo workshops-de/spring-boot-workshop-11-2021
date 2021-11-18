@@ -1,4 +1,13 @@
 spring:
+  datasource:
+    url: jdbc:h2:mem:bookshelfdb
+    username: sa
+    password: pass
+  h2:
+    console:
+      enabled: true
+---
+spring:
   config:
     activate:
       on-profile:

@@ -11,6 +11,7 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "bookshelf")
 @Data
 public class BookshelfProperties {
+
     private String name;
     private int since;
 
